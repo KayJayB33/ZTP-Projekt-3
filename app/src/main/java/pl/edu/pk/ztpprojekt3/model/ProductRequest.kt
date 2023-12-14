@@ -2,8 +2,7 @@ package pl.edu.pk.ztpprojekt3.model
 
 import java.math.BigDecimal
 
-data class Product (
-    val id: String,
+data class ProductRequest (
     val name: String,
     val description: String,
     val price: BigDecimal,

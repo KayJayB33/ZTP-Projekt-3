@@ -15,5 +15,6 @@ sealed class ProductListEvent {
 
     object OnUndoDeleteClick : ProductListEvent()
     data class OnProductClick(val product: ProductBasic) : ProductListEvent()
+    data class OnEditProductClick(val product: ProductBasic) : ProductListEvent()
     object OnAddProductClick : ProductListEvent()
 }

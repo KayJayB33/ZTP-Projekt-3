@@ -1,10 +1,9 @@
 package pl.edu.pk.ztpprojekt3.repository
 
 import pl.edu.pk.ztpprojekt3.api.ProductService
-import pl.edu.pk.ztpprojekt3.model.Product
+import pl.edu.pk.ztpprojekt3.model.ProductRequest
 import pl.edu.pk.ztpprojekt3.model.ProductBasic
 import retrofit2.Response
-import java.math.BigDecimal
 
 class ProductRepository(private val service: ProductService) {
 
@@ -16,7 +15,11 @@ class ProductRepository(private val service: ProductService) {
         return service.deleteProduct(id)
     }
 
-    suspend fun getProduct(id: String): Product {
-        return Product("1", "test", "test", BigDecimal(1), 1)
+    suspend fun getProduct(id: String): ProductRequest {
+        return service.getProducts(id)
+    }
+
+    suspend fun insertProduct(productRequest: ProductRequest) : Response<String> {
+        return service.insertProduct(productRequest)
     }
 }
