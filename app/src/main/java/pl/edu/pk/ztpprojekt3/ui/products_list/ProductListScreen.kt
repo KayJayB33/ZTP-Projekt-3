@@ -70,64 +70,68 @@ fun ProductListScreen(
             }
         }
     }
-    Scaffold(
-        topBar = { TopAppBar(
-            title = { Text(text = "Product List") },
-            actions = {
-                // Settings Button
-                IconButton(onClick = {
-                    viewModel.onEvent(ProductListEvent.OnSettingClick)
+
+    Box {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(text = "Product List") },
+                    actions = {
+                        // Settings Button
+                        IconButton(onClick = {
+                            viewModel.onEvent(ProductListEvent.OnSettingClick)
+                        }) {
+                            Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                        }
+                    }
+                )
+            },
+            modifier = Modifier.pullRefresh(state),
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            floatingActionButton = {
+                FloatingActionButton(onClick = {
+                    viewModel.onEvent(ProductListEvent.OnAddProductClick)
                 }) {
-                    Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add"
+                    )
                 }
             }
-        ) },
-        modifier = Modifier.pullRefresh(state),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.onEvent(ProductListEvent.OnAddProductClick)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add"
-                )
-            }
-        }
-    ) { innerPadding ->
-        Box {
-            if (products.value == null || products.value!!.isEmpty()) {
-                NoProductsScreen()
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                ) {
-                    items(products.value!!) { product ->
-                        ProductItem(
-                            product = product,
-                            onEvent = viewModel::onEvent,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    viewModel.onEvent(
-                                        ProductListEvent.OnProductClick(
-                                            product
+        ) { innerPadding ->
+            Box {
+                if (products.value == null || products.value!!.isEmpty()) {
+                    NoProductsScreen()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
+                        items(products.value!!) { product ->
+                            ProductItem(
+                                product = product,
+                                onEvent = viewModel::onEvent,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        viewModel.onEvent(
+                                            ProductListEvent.OnProductClick(
+                                                product
+                                            )
                                         )
-                                    )
-                                }
-                                .padding(16.dp)
-                        )
+                                    }
+                                    .padding(16.dp)
+                            )
+                        }
                     }
                 }
             }
-
-            PullRefreshIndicator(
-                refreshing = isRefreshing,
-                state = state,
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
         }
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = state,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 }

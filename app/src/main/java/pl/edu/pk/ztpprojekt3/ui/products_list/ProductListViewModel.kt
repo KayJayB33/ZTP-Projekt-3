@@ -62,6 +62,7 @@ class ProductListViewModel @Inject constructor(
     }
 
     fun fetchProducts() {
+        Log.i(TAG, "Fetching products...")
         viewModelScope.launch {
             _products.postValue(repository.getProducts())
         }
