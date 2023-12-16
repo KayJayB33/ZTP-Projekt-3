@@ -40,6 +40,7 @@ class ProductListViewModel @Inject constructor(
     fun onEvent(event: ProductListEvent) {
         when(event) {
             is ProductListEvent.OnProductClick -> {
+                sendUiEvent(UiEvent.Navigate(Routes.PRODUCT_DETAILS + "?productId=${event.product.id}"))
             }
             is ProductListEvent.OnEditProductClick -> {
                 sendUiEvent(UiEvent.Navigate(Routes.ADD_EDIT_PRODUCT + "?productId=${event.product.id}"))

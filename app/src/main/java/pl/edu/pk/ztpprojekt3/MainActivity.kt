@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import pl.edu.pk.ztpprojekt3.ui.add_edit_product.AddEditProductScreen
+import pl.edu.pk.ztpprojekt3.ui.product_details.ProductDetailsScreen
 import pl.edu.pk.ztpprojekt3.ui.products_list.ProductListScreen
 import pl.edu.pk.ztpprojekt3.ui.theme.ZTPProjekt3Theme
 import pl.edu.pk.ztpprojekt3.util.Routes
@@ -31,6 +32,18 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(it.route)
                             }
                         )
+                    }
+                    composable(
+                        route = Routes.PRODUCT_DETAILS + "?productId={productId}",
+                        arguments = listOf(
+                            navArgument(name = "productId") {
+                                type = NavType.StringType
+                            }
+                        )
+                    ) {
+                        ProductDetailsScreen(onPopBackStack = {
+                            navController.popBackStack()
+                        })
                     }
                     composable(
                         route = Routes.ADD_EDIT_PRODUCT + "?productId={productId}",
