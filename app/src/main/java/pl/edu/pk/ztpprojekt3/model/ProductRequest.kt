@@ -7,4 +7,6 @@ data class ProductRequest (
     val description: String,
     val price: BigDecimal,
     val availableQuantity: Int
-)
+) {
+    constructor(product: Product) : this(product.name, product.description, product.price, product.availableQuantity)
+}

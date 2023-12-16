@@ -5,14 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import pl.edu.pk.ztpprojekt3.MainActivity
-import pl.edu.pk.ztpprojekt3.model.ProductRequest
 import pl.edu.pk.ztpprojekt3.model.ProductBasic
+import pl.edu.pk.ztpprojekt3.model.ProductRequest
 import pl.edu.pk.ztpprojekt3.repository.ProductRepository
 import pl.edu.pk.ztpprojekt3.util.Routes
 import pl.edu.pk.ztpprojekt3.util.UiEvent
@@ -51,7 +49,7 @@ class ProductListViewModel @Inject constructor(
             }
             is ProductListEvent.OnDeleteProductClick -> {
                 viewModelScope.launch {
-                    deletedProductRequest = repository.getProduct(event.product.id)
+                    deletedProductRequest = ProductRequest(repository.getProduct(event.product.id))
                     val result = repository.deleteProduct(event.product.id)
                     if(result.isSuccessful) {
                         Log.i(TAG, result.body().toString())

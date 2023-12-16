@@ -1,29 +1,28 @@
 package pl.edu.pk.ztpprojekt3.ui.add_edit_product
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.edu.pk.ztpprojekt3.R
 import pl.edu.pk.ztpprojekt3.util.UiEvent
 
 @Composable
@@ -32,7 +31,6 @@ fun AddEditProductScreen(
     viewModel: AddEditProductViewModel = hiltViewModel()
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
@@ -65,58 +63,95 @@ fun AddEditProductScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
-            TextField(
-                value = viewModel.name,
+            Text(
+                text = stringResource(id = R.string.strName),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 8.dp)
+            )
+            CustomTextFieldApp(
+                placeholder = stringResource(id = R.string.strNamePlaceholder),
+                text = viewModel.formState.name,
                 onValueChange = {
                     viewModel.onEvent(AddEditProductEvent.OnNameChange(it))
                 },
-                label = { Text(text = "Name") },
-                placeholder = {
-                    Text(text = "e.g. Laptop")
-                },
-                modifier = Modifier.fillMaxWidth()
+                imeAction = ImeAction.Next,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                errorMessage = viewModel.formState.nameError,
+                isError = viewModel.formState.nameError != null,
+                singleLine = true,
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = viewModel.description,
+            Text(
+                text = stringResource(id = R.string.strDescription),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 8.dp)
+            )
+            CustomTextFieldApp(
+                placeholder = stringResource(id = R.string.strDescriptionPlaceholder),
+                text = viewModel.formState.description,
                 onValueChange = {
                     viewModel.onEvent(AddEditProductEvent.OnDescriptionChange(it))
                 },
-                label = { Text(text = "Description") },
-                placeholder = {
-                    Text(text = "e.g. This is laptop")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = false,
-                maxLines = 5
+                imeAction = ImeAction.Next,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                errorMessage = viewModel.formState.descriptionError,
+                isError = viewModel.formState.descriptionError != null,
+                singleLine = true,
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = viewModel.price.toString(),
-                onValueChange = {
-                    viewModel.onEvent(AddEditProductEvent.OnPriceChange(it.toDouble()))
-                },
-                label = { Text(text = "Price") },
-                placeholder = {
-                    Text(text = "e.g. 12.34")
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth(),
+            Text(
+                text = stringResource(id = R.string.strPrice),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 8.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = viewModel.availableQuantity.toString(),
+            CustomTextFieldApp(
+                placeholder = stringResource(id = R.string.strPricePlaceholder),
+                text = viewModel.formState.price,
                 onValueChange = {
-                    viewModel.onEvent(AddEditProductEvent.OnPriceChange(it.toDouble()))
+                    viewModel.onEvent(AddEditProductEvent.OnPriceChange(it))
                 },
-                label = { Text(text = "Price") },
-                placeholder = {
-                    Text(text = "e.g. 12.34")
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                errorMessage = viewModel.formState.priceError,
+                isError = viewModel.formState.priceError != null,
+                singleLine = true,
+            )
+            Text(
+                text = stringResource(id = R.string.strAvailableQuantity),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 8.dp)
+            )
+            CustomTextFieldApp(
+                placeholder = stringResource(id = R.string.strAvailableQuantity),
+                text = viewModel.formState.availableQuantity,
+                onValueChange = {
+                    viewModel.onEvent(AddEditProductEvent.OnAvailableQuantityChange(it))
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth(),
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                errorMessage = viewModel.formState.availableQuantityError,
+                isError = viewModel.formState.availableQuantityError != null,
+                singleLine = true,
             )
         }
     }

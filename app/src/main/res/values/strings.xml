@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">ZTP-Projekt-3</string>
+
+    <string name="strName">Name</string>
+    <string name="strDescription">Description</string>
+    <string name="strPrice">Price</string>
+    <string name="strAvailableQuantity">Available quantity</string>
+
+    <string name="strNamePlaceholder">e.g. Laptop</string>
+    <string name="strDescriptionPlaceholder">e.g. This is laptop</string>
+    <string name="strPricePlaceholder">1.23</string>
+    <string name="strAvailableQuantityPlaceholder">123</string>
+
+    <string name="strTheNameCanNotBeBlank">The name can\'t be blank</string>
+    <string name="strTheNamesLengthShouldBeWithinTwoAndThirtyTwoCharacters">The name\'s length should be within 2 and 32 characters</string>
+
+    <string name="strTheDescriptionCanNotBeBlank">The description can\'t be blank</string>
+
+    <string name="strThePriceShouldBeANumber">The price should be a number</string>
+    <string name="strThePriceShouldHaveMaxTwoDigitsAfterADecimal">The price should have max 2 digits after a decimal</string>
+
+    <string name="strTheAvailableQuantityShouldBeANumber">The available quantity should be a number</string>
 </resources>

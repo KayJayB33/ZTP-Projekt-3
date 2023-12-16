@@ -1,9 +1,11 @@
 package pl.edu.pk.ztpprojekt3.api
 
 import com.google.gson.GsonBuilder
+import pl.edu.pk.ztpprojekt3.util.InstantDeserializer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.time.Instant
 
 
 object RetrofitInstance {
@@ -11,6 +13,7 @@ object RetrofitInstance {
 
     var gson = GsonBuilder()
         .setLenient()
+        .registerTypeAdapter(Instant::class.java, InstantDeserializer())
         .create()
 
     val productService = Retrofit.Builder()
