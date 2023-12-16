@@ -36,7 +36,7 @@ class ProductListViewModel @Inject constructor(
 
     private var deletedProductRequest: ProductRequest? = null
 
-    private val _refreshInterval = MutableStateFlow(5000L)
+    private val _refreshInterval = MutableStateFlow(0L)
     val refreshInterval = _refreshInterval.asStateFlow()
 
     private var job: Job? = null
