@@ -6,8 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import pl.edu.pk.ztpprojekt3.model.ProductBasic
 import pl.edu.pk.ztpprojekt3.model.ProductRequest
@@ -30,6 +35,31 @@ class ProductListViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     private var deletedProductRequest: ProductRequest? = null
+
+    private val _refreshInterval = MutableStateFlow(5000L)
+    val refreshInterval = _refreshInterval.asStateFlow()
+
+    private var job: Job? = null
+
+    fun setRefreshInterval(interval: Long) {
+        _refreshInterval.value = interval
+        Log.i(TAG, "Cancel periodic task")
+        job?.cancel()
+        if(_refreshInterval.value > 0) {
+            // Cancel the existing job and start a new one with the updated interval
+            Log.i(TAG, "Start periodic task with interval ${_refreshInterval.value}")
+            job = startPeriodicFetch()
+        }
+    }
+
+    private fun startPeriodicFetch(): Job {
+        return viewModelScope.launch {
+            while (isActive) {
+                fetchProducts()
+                delay(_refreshInterval.value)
+            }
+        }
+    }
 
     fun fetchProducts() {
         viewModelScope.launch {
@@ -73,8 +103,8 @@ class ProductListViewModel @Inject constructor(
                     fetchProducts()
                 }
             }
-            is ProductListEvent.OnDoneChange -> {
-
+            is ProductListEvent.OnSettingClick -> {
+                sendUiEvent(UiEvent.Navigate(Routes.SETTINGS))
             }
         }
     }
@@ -83,5 +113,10 @@ class ProductListViewModel @Inject constructor(
         viewModelScope.launch {
             _uiEvent.send(event)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel() // Cancel the job when the ViewModel is cleared
     }
 }

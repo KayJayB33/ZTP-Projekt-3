@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.edu.pk.ztpprojekt3.ui.add_edit_product.AddEditProductScreen
 import pl.edu.pk.ztpprojekt3.ui.product_details.ProductDetailsScreen
 import pl.edu.pk.ztpprojekt3.ui.products_list.ProductListScreen
+import pl.edu.pk.ztpprojekt3.ui.settings_screen.SettingsScreen
 import pl.edu.pk.ztpprojekt3.ui.theme.ZTPProjekt3Theme
 import pl.edu.pk.ztpprojekt3.util.Routes
 
@@ -55,6 +56,11 @@ class MainActivity : ComponentActivity() {
                         )
                     ) {
                         AddEditProductScreen(onPopBackStack = {
+                            navController.popBackStack()
+                        })
+                    }
+                    composable(Routes.SETTINGS) {
+                        SettingsScreen(onPopBackStack = {
                             navController.popBackStack()
                         })
                     }
